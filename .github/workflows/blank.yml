@@ -21,7 +21,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::258708352168:oidc-provider/token.actions.githubusercontent.com
           role-session-name: samplerolesession
-          aws-region: us-east-2
+          aws-region: "us-east-2"
       # Upload a file to AWS s3
       - name:  Copy index.html to s3
         run: |
