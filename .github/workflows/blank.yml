@@ -1,28 +1,24 @@
-# Sample workflow to access AWS resources when workflow is tied to branch
-# The workflow Creates static website using aws s3
-name: AWS example workflow
+name: Publish to AWS SNS Topic
+
 on:
-  push
-env:
-  BUCKET_NAME : "klini"
-  AWS_REGION : "us-east-2"
-# permission can be added at johb level or workflow level
-permissions:
-  id-token: write   # This is required for requesting the JWT
-  contents: read    # This is required for actions/checkout
+  push:
+    branches:
+      - main
+
 jobs:
-  S3PackageUpload:
+  publish-to-sns:
     runs-on: ubuntu-latest
     steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v4
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@master
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::258708352168:oidc-provider/token.actions.githubusercontent.com
-          role-session-name: samplerolesession
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: "us-east-2"
-      # Upload a file to AWS s3
-      - name:  Copy index.html to s3
+
+      - name: Publish to SNS
         run: |
-          aws s3 cp ./index.html s3://${{ env.BUCKET_NAME }}/
+          aws sns publish --topic-arn ${{ secrets.SNS_TOPIC_ARN }} --message "Hello from GitHub Actions!"
