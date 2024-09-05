@@ -32,7 +32,7 @@ jobs:
       - name: echo script
         run: cat new_appai.py
       - name: Running the Python script
-        run: python new_appai.py
+        run: python selenium-template.py
         env:
           LOGIN_SECRET: ${{ secrets.APPAI_LOGIN }} 
           PASSWORD_SECRET: ${{ secrets.APPAI_PASSWORD }} 
