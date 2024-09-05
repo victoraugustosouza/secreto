@@ -1,24 +1,50 @@
 name: Publish to AWS SNS Topic
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   publish-to-sns:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: "us-east-2"
-
+      - name: Checking out repo
+        uses: actions/checkout@v3
+      - name: Setting up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Installing package list
+        run: apt list --installed    
+      - name: Removing previous chrome instances on runner 
+        run: sudo apt purge google-chrome-stable  
+        
+       # Need to fetch reqs if needed
+      - name: Installing all necessary packages
+        run: pip install chromedriver-autoinstaller selenium pyvirtualdisplay pandas
+      - name: Install xvfb
+        run: sudo apt-get install xvfb
+      - name: echo script
+        run: cat new_appai.py
+      - name: Running the Python script
+        run: python new_appai.py
+        env:
+          LOGIN_SECRET: ${{ secrets.APPAI_LOGIN }} 
+          PASSWORD_SECRET: ${{ secrets.APPAI_PASSWORD }} 
+        
+      - name: Commit and Push The Results From Python Selenium Action
+        run: |
+         git config --global user.name "github-actions[bot]"
+         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+         git pull
+         git add -A
+         git commit -m "GitHub Actions Results added"
+         git push
       - name: Publish to SNS
         run: |
           aws sns publish --topic-arn ${{ secrets.SNS_TOPIC_ARN }} --message "Hello from GitHub Actions!"
