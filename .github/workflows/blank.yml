@@ -32,21 +32,12 @@ jobs:
       - name: Install xvfb
         run: sudo apt-get install xvfb
       - name: echo script
-        run: cat new_appai.py
+        run: cat selenium-template.py
       - name: Running the Python script
         run: python selenium-template.py
         env:
           LOGIN_SECRET: ${{ secrets.APPAI_LOGIN }} 
           PASSWORD_SECRET: ${{ secrets.APPAI_PASSWORD }} 
-        
-      - name: Commit and Push The Results From Python Selenium Action
-        run: |
-         git config --global user.name "github-actions[bot]"
-         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-         git pull
-         git add -A
-         git commit -m "GitHub Actions Results added"
-         git push
       - name: Publish to SNS
         run: |
           aws sns publish --topic-arn ${{ secrets.SNS_TOPIC_ARN }} --message "Hello from GitHub Actions!"
