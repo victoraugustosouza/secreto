@@ -5,6 +5,8 @@ on:
 
 jobs:
   publish-to-sns:
+    permissions:
+        contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
