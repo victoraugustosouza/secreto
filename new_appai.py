@@ -23,7 +23,7 @@ def remove_accents(input_str):
     
     return only_ascii
 
-
+print("init------------")
 display = Display(visible=0, size=(800, 800))  
 display.start()
 
