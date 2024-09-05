@@ -41,8 +41,17 @@ for option in options:
 
     
 driver = webdriver.Chrome(options = chrome_options)
-
 driver.get('https://associado.appai.org.br/')
-print(driver.title)
-with open('./GitHub_Action_Results.txt', 'w') as f:
-    f.write(f"This was written with a GitHub action {driver.title}")
+#time.sleep(70)
+
+print("Iniciando login...")
+wait = WebDriverWait(driver, 70)  
+username_field = wait.until(EC.visibility_of_element_located(( By.ID, 'UserName')))
+username_field.send_keys(os.environ['LOGIN_SECRET'])  # Replace with your actual username
+password_field = wait.until(EC.visibility_of_element_located(( By.ID, 'password-field')))  
+password_field.send_keys(os.environ['PASSWORD_SECRET'])
+login_button = wait.until(EC.visibility_of_element_located((By.ID, 'btnLogin')))  # Replace with the actual element ID or other selector
+login_button.click()
+
+time.sleep(15)
+print("Login realizado.")
