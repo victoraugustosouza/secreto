@@ -56,8 +56,5 @@ login_button.click()
 time.sleep(5)
 print("Login realizado.")
 
-while driver.current_url != "https://associado.appai.org.br/":
-    pass
-
 print("Carregando página de eventos...")
 driver.get("https://associado.appai.org.br/bom-espetaculo")
