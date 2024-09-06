@@ -53,5 +53,73 @@ password_field.send_keys(os.environ['PASSWORD_SECRET'])
 login_button = wait.until(EC.visibility_of_element_located((By.ID, 'btnLogin')))  # Replace with the actual element ID or other selector
 login_button.click()
 
-time.sleep(15)
+time.sleep(5)
 print("Login realizado.")
+while driver.current_url != "https://associado.appai.org.br/":
+    pass
+
+print("Carregando página de eventos...")
+driver.get("https://associado.appai.org.br/bom-espetaculo")
+
+
+# In[228]:
+
+
+while driver.current_url != "https://associado.appai.org.br/bom-espetaculo":
+    pass
+
+print("Páginca carregada...")
+dropdown_element =  wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'selectLarge.dropdown-toggle.dropdown-toggle-split')))
+dropdown = Select(dropdown_element)
+dropdown.select_by_visible_text('Rio de Janeiro')  # Replace with the actual visible text of the option
+
+
+# In[230]:
+
+print("Clicando em Carregar Mais")
+counter = 5
+while counter > 0 :
+    button_text = 'Carregar Mais'  # Replace with the actual text of the button
+    #print(counter)
+# Retrieve all buttons containing the specified text
+    try:
+        buttom = driver.find_element(By.XPATH, f"//button[contains(text(), '{button_text}')]")
+        buttom.click()
+        time.sleep(5)
+        counter = counter -1
+        print(counter)
+    except:
+        counter = counter -1
+        print(counter)
+        continue
+
+print("Expandindo eventos e capturando agendas...")
+time.sleep(5)
+eventos = []
+box_container = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '.box')))
+cards = box_container.find_elements(By.CSS_SELECTOR, ".card")
+
+for i in range(len(cards)):
+    element = cards[i].find_elements(By.TAG_NAME, "a")[0]
+    driver.execute_script("arguments[0].click();", element)
+    title = cards[i].find_elements(By.TAG_NAME, "h6")[0].text
+    categoria = cards[i].find_elements(By.TAG_NAME, "h6")[1].text
+    print(title+" "+categoria)
+    table = cards[i].find_elements(By.CLASS_NAME, "appai-table")[0]
+    rows = table.find_elements(By.TAG_NAME, "tr")
+
+    for r in rows:
+        local_recorder = [remove_accents(title)]
+        values = r.find_elements(By.TAG_NAME, "td")
+        for i in range(len(values)-2):
+            print(values[i].text)
+            local_recorder.append(remove_accents(values[i].text))
+        if len(local_recorder) > 1:
+            eventos.append(tuple(local_recorder))
+        
+body_text = driver.find_element(By.TAG_NAME, "body").text
+
+now = datetime.now()
+timestamp_str = now.strftime("%Y-%m-%d %H:%M:%S")+body_text
+
+print("Salvando em dataframe...")
