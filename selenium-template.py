@@ -67,22 +67,4 @@ dropdown.select_by_visible_text('Rio de Janeiro')  # Replace with the actual vis
 # In[230]:
 
 print("Clicando em Carregar Mais")
-counter = 5
-while counter > 0 :
-    button_text = 'Carregar Mais'  # Replace with the actual text of the button
-    #print(counter)
-# Retrieve all buttons containing the specified text
-    try:
-        buttom = driver.find_element(By.XPATH, f"//button[contains(text(), '{button_text}')]")
-        buttom.click()
-        time.sleep(5)
-        counter = counter -1
-        print(counter)
-    except:
-        counter = counter -1
-        print(counter)
-        continue
 
-print("Expandindo eventos e capturando agendas...")
-time.sleep(5)
-eventos = []
