@@ -58,8 +58,9 @@ print("Login realizado.")
 
 print("Carregando página de eventos...")
 driver.get("https://associado.appai.org.br/bom-espetaculo")
-time.sleep(15)
-print("Páginca carregada...")
+while driver.current_url != "https://associado.appai.org.br/":
+    pass
+print("Página carregada...")
 dropdown_element =  wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'selectLarge.dropdown-toggle.dropdown-toggle-split')))
 dropdown = Select(dropdown_element)
 dropdown.select_by_visible_text('Rio de Janeiro')  # Replace with the actual visible text of the option
