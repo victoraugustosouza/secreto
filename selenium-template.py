@@ -1,4 +1,4 @@
-from selenium import webdriver
+7from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -61,13 +61,11 @@ driver.get("https://associado.appai.org.br/bom-espetaculo")
 while driver.current_url != "https://associado.appai.org.br/bom-espetaculo":
     pass
 print("Página carregada...")
-#dropdown_element =  ##wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'selectLarge')))
+all_elements = driver.find_elements("xpath", "//*")
 
-dropdown = driver.find_element("xpath", '//select[@class="selectLarge dropdown-toggle dropdown-toggle-split"]')
-
-dropdown = Select(dropdown_element)
-dropdown.select_by_visible_text('Rio de Janeiro')  # Replace with the actual visible text of the option
-
+# Itere sobre todos os elementos encontrados e imprima suas tags e atributos
+for element in all_elements:
+    print(f"Tag: {element.tag_name}, Atributos: {element.get_attribute('outerHTML')}")
 
 # In[230]:
 
