@@ -58,7 +58,7 @@ print("Login realizado.")
 
 print("Carregando página de eventos...")
 driver.get("https://associado.appai.org.br/bom-espetaculo")
-while driver.current_url != "https://associado.appai.org.br/":
+while driver.current_url != "https://associado.appai.org.br/bom-espetaculo":
     pass
 print("Página carregada...")
 dropdown_element =  wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'selectLarge.dropdown-toggle.dropdown-toggle-split')))
