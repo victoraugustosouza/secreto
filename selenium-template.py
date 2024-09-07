@@ -61,13 +61,24 @@ driver.get("https://associado.appai.org.br/bom-espetaculo")
 while driver.current_url != "https://associado.appai.org.br/bom-espetaculo":
     pass
 print("Página carregada...")
+
+# Encontre todos os elementos na página usando a tag universal '*'
 all_elements = driver.find_elements("xpath", "//*")
 
-# Itere sobre todos os elementos encontrados e imprima suas tags e atributos
+# Itere sobre todos os elementos encontrados
 for element in all_elements:
-    print(f"Tag: {element.tag_name}, Atributos: {element.get_attribute('outerHTML')}")
+    # Verifique se o elemento é um dropdown (tag <select>)
+    if element.tag_name == 'select':
+        print(f"Dropdown encontrado: {element.get_attribute('outerHTML')}")
+        # Crie uma instância de Select para manipular o dropdown
+        select = Select(element)
+        # Imprima todas as opções dentro do dropdown
+        for option in select.options:
+            print(f" - Opção: {option.text} (valor: {option.get_attribute('value')})")
+    else:
+        print(f"Tag: {element.tag_name}, Atributos: {element.get_attribute('outerHTML')}")
 
-# In[230]:
+
 
 print("Clicando em Carregar Mais")
 
