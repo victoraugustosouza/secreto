@@ -58,6 +58,7 @@ print("Login realizado.")
 
 print("Carregando página de eventos...")
 driver.get("https://associado.appai.org.br/bom-espetaculo")
+time.sleep(15)
 print("Páginca carregada...")
 dropdown_element =  wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'selectLarge.dropdown-toggle.dropdown-toggle-split')))
 dropdown = Select(dropdown_element)
